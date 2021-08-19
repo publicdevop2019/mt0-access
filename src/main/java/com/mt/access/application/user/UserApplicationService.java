@@ -116,7 +116,6 @@ public class UserApplicationService implements UserDetailsService {
     @SubscribeForEvent
     @Transactional
     public void patchBatch(List<PatchCommand> commands, String changeId) {
-        Collection<PatchCommand> patchCommands = CommonDomainRegistry.getCustomObjectSerializer().deepCopyCollection(commands);
         ApplicationServiceRegistry.idempotentWrapper().idempotent( changeId, (ignored) -> {
             DomainRegistry.getUserService().batchLock(commands);
             return null;
